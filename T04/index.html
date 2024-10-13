@@ -18,77 +18,80 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      background-color: #f4f4f9; /* Color de fondo suave */
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente moderna */
+      background-color: #eaeaea;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     h1 {
-      color: #333; /* Color del título */
+      color: #333;
       text-align: center;
-      margin-bottom: 20px;
-      font-size: 2.5em; /* Tamaño del título */
-    }
-
-    .container {
-      background: white; /* Color de fondo de contenedores */
-      border-radius: 10px; /* Bordes redondeados */
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra del contenedor */
-      padding: 20px; /* Relleno del contenedor */
-      margin: 20px; /* Espaciado entre contenedores */
-      text-align: center; /* Centrar texto */
-      width: 300px; /* Ancho fijo de contenedores */
+      margin-bottom: 40px;
+      font-size: 2.5em;
     }
 
     .button-container {
       display: flex;
-      flex-direction: column; /* Apilar botones verticalmente */
-      align-items: center; /* Centrar botones */
+      flex-direction: column;
+      align-items: center;
+      gap: 30px; /* Mayor separación entre botones */
+    }
+
+    .time-display {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .time-label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+      max-width: 500px;
+      gap: 20px; /* Mayor espacio entre botones de ajuste */
     }
 
     button {
-      font-size: 16px; /* Tamaño de la fuente del botón */
-      padding: 12px 24px; /* Relleno del botón */
-      border: none; /* Sin borde */
-      border-radius: 25px; /* Bordes redondeados */
-      cursor: pointer; /* Cursor de mano al pasar sobre el botón */
-      transition: background-color 0.3s, transform 0.2s; /* Transiciones suaves */
-      margin: 10px; /* Espaciado entre botones */
-      width: 200px; /* Ancho fijo de botones */
-      font-weight: bold; /* Negrita para el texto del botón */
-      background-color: #007BFF; /* Color de fondo del botón */
-      color: white; /* Color del texto del botón */
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra de botón */
+      font-size: 16px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      font-weight: bold;
+      width: 180px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     }
 
     button:hover {
-      background-color: #0056b3; /* Color al pasar el mouse */
-      opacity: 0.9; /* Efecto al pasar el mouse */
-      transform: translateY(-2px); /* Levantar el botón al pasar el mouse */
+      opacity: 0.9;
+      transform: translateY(-2px);
     }
 
     button:active {
-      transform: translateY(1px); /* Efecto al hacer clic en el botón */
+      transform: translateY(1px);
     }
 
-    .timer-container {
-      border-left: 5px solid #28a745; /* Borde verde para cronómetro */
-      animation: fadeIn 0.5s; /* Animación de entrada */
+    .start-stop {
+      background-color: #4CAF50;
+      color: white;
     }
 
-    .countdown-container {
-      border-left: 5px solid #dc3545; /* Borde rojo para temporizador */
-      animation: fadeIn 0.5s; /* Animación de entrada */
+    .adjust-increase {
+      background-color: #2196F3;
+      color: white;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .adjust-decrease {
+      background-color: #f44336;
+      color: white;
     }
   </style>
 </head>
@@ -96,18 +99,8 @@
 <body>
   <h1>Cronómetro y Temporizador</h1> <!-- Título de la aplicación -->
 
-  <div class="container timer-container">
-    <h2>Cronómetro</h2> <!-- Título del cronómetro -->
-    <div class="button-container">
-      <!-- Botones del cronómetro se crearán dinámicamente en el archivo T04.js -->
-    </div>
-  </div>
-
-  <div class="container countdown-container">
-    <h2>Temporizador</h2> <!-- Título del temporizador -->
-    <div class="button-container">
-      <!-- Botones del temporizador se crearán dinámicamente en el archivo T04.js -->
-    </div>
+  <div class="button-container">
+    <!-- Los botones y controles se crearán dinámicamente en el archivo T04.js -->
   </div>
 </body>
 </html>

@@ -1,98 +1,124 @@
-// Declarar variables para el cronómetro
-let startTime; // Tiempo de inicio del cronómetro
-let elapsedTime = 0; // Tiempo transcurrido
-let isRunning = false; // Estado del cronómetro
-let cronometroButton; // Botón para comenzar/detener el cronómetro
+let startTime;
+let elapsedTime = 0;
+let isRunning = false;
+let cronometroButton;
+let cronometroIncreaseButton, cronometroDecreaseButton; // Botones para ajustar el cronómetro
 
-// Declarar variables para el temporizador
-let timerDuration = 10; // Duración del temporizador en segundos
-let timerRemaining; // Tiempo restante del temporizador
-let timerRunning = false; // Estado del temporizador
-let timerButton; // Botón para comenzar/detener el temporizador
+let timerDuration = 10;
+let timerRemaining;
+let timerRunning = false;
+let timerButton;
+let timerIncreaseButton, timerDecreaseButton; // Botones para ajustar el temporizador
+let timerAlertShown = false; // Controlar que la alerta solo se muestre una vez
 
 function setup() {
-  createCanvas(400, 300); // Crear un lienzo de 400x300 píxeles
+  createCanvas(400, 300);
   
-  // Inicializar el temporizador
   timerRemaining = timerDuration;
 
+  // Crear contenedor principal para los botones
+  const buttonContainer = select('.button-container');
+
+  // Mostrar tiempo del cronómetro con su etiqueta
+  const cronometroDisplay = createDiv();
+  cronometroDisplay.class('time-display');
+  cronometroDisplay.parent(buttonContainer);
+  cronometroDisplay.html('<span class="time-label">Cronómetro: </span><span id="cronometroTime">0.00 s</span>');
+
   // Crear botón para comenzar/detener el cronómetro
-  cronometroButton = createButton('Iniciar Cronómetro'); // Texto del botón
-  cronometroButton.position(10, 10); // Posición del botón
-  cronometroButton.style('font-size', '16px'); // Tamaño de la fuente
-  cronometroButton.style('background-color', '#4CAF50'); // Color de fondo
-  cronometroButton.style('color', 'white'); // Color del texto
-  cronometroButton.style('border', 'none'); // Sin borde
-  cronometroButton.style('padding', '10px 20px'); // Relleno
-  cronometroButton.mousePressed(toggleCronometro); // Alternar cronómetro al hacer clic
+  cronometroButton = createButton('Iniciar Cronómetro');
+  cronometroButton.class('start-stop');
+  cronometroButton.mousePressed(toggleCronometro);
+  cronometroButton.parent(buttonContainer);
+
+  // Crear botones para ajustar el cronómetro
+  cronometroIncreaseButton = createButton('+ Cronómetro');
+  cronometroIncreaseButton.class('adjust-increase');
+  cronometroIncreaseButton.mousePressed(() => adjustTime('cronometro', 5));
+  cronometroIncreaseButton.parent(buttonContainer);
+
+  cronometroDecreaseButton = createButton('- Cronómetro');
+  cronometroDecreaseButton.class('adjust-decrease');
+  cronometroDecreaseButton.mousePressed(() => adjustTime('cronometro', -5));
+  cronometroDecreaseButton.parent(buttonContainer);
+
+  // Mostrar tiempo del temporizador con su etiqueta
+  const timerDisplay = createDiv();
+  timerDisplay.class('time-display');
+  timerDisplay.parent(buttonContainer);
+  timerDisplay.html('<span class="time-label">Temporizador: </span><span id="timerTime">' + timerDuration + ' s</span>');
 
   // Crear botón para comenzar/detener el temporizador
-  timerButton = createButton('Iniciar Temporizador'); // Texto del botón
-  timerButton.position(10, 50); // Posición del botón
-  timerButton.style('font-size', '16px'); // Tamaño de la fuente
-  timerButton.style('background-color', '#FF5722'); // Color de fondo
-  timerButton.style('color', 'white'); // Color del texto
-  timerButton.style('border', 'none'); // Sin borde
-  timerButton.style('padding', '10px 20px'); // Relleno
-  timerButton.mousePressed(toggleTimer); // Alternar temporizador al hacer clic
+  timerButton = createButton('Iniciar Temporizador');
+  timerButton.class('start-stop');
+  timerButton.mousePressed(toggleTimer);
+  timerButton.parent(buttonContainer);
+
+  // Crear botones para ajustar el temporizador
+  timerIncreaseButton = createButton('+ Temporizador');
+  timerIncreaseButton.class('adjust-increase');
+  timerIncreaseButton.mousePressed(() => adjustTime('temporizador', 5));
+  timerIncreaseButton.parent(buttonContainer);
+
+  timerDecreaseButton = createButton('- Temporizador');
+  timerDecreaseButton.class('adjust-decrease');
+  timerDecreaseButton.mousePressed(() => adjustTime('temporizador', -5));
+  timerDecreaseButton.parent(buttonContainer);
 }
 
 function draw() {
-  // Establecer un fondo degradado
-  setGradient(0, 0, width, height, color(173, 216, 230), color(255, 105, 180));
+  background(240);
 
-  // Mostrar el cronómetro
-  textSize(32); // Tamaño del texto
-  fill(255); // Color del texto (blanco)
-  
+  // Actualizar el cronómetro
   if (isRunning) {
-    elapsedTime += deltaTime / 1000; // Solo actualizar el tiempo transcurrido si está corriendo
+    elapsedTime += deltaTime / 1000;
   }
-  
-  text(nf(elapsedTime, 1, 2) + ' s', 10, 150); // Mostrar el tiempo transcurrido del cronómetro
+  select('#cronometroTime').html(nf(elapsedTime, 1, 2) + ' s');
 
-  // Mostrar el temporizador
+  // Actualizar el temporizador
   if (timerRunning) {
-    timerRemaining -= deltaTime / 1000; // Reducir el tiempo restante
+    timerRemaining -= deltaTime / 1000;
     if (timerRemaining <= 0) {
-      timerRemaining = 0; // Asegurarse de que no sea negativo
-      timerRunning = false; // Detener el temporizador cuando llegue a cero
+      timerRemaining = 0;
+      timerRunning = false;
+      if (!timerAlertShown) {
+        alert('¡El temporizador ha llegado a cero!');
+        timerAlertShown = true; // Asegurarse de que la alerta solo se muestre una vez
+      }
     }
   }
-  
-  text(nf(timerRemaining, 1, 2) + ' s', 10, 200); // Mostrar el tiempo restante del temporizador
+  select('#timerTime').html(nf(timerRemaining, 1, 2) + ' s');
 }
 
-// Función para establecer un fondo degradado
-function setGradient(x, y, w, h, c1, c2) {
-  for (let i = 0; i <= h; i++) {
-    let inter = map(i, 0, h, 0, 1);
-    let c = lerpColor(c1, c2, inter);
-    stroke(c);
-    line(x, y + i, x + w, y + i);
-  }
-}
-
-// Función para alternar el cronómetro
 function toggleCronometro() {
   if (isRunning) {
-    isRunning = false; // Detener el cronómetro
-    cronometroButton.html('Iniciar Cronómetro'); // Cambiar texto del botón
+    isRunning = false;
+    cronometroButton.html('Iniciar Cronómetro');
   } else {
-    elapsedTime = 0; // Reiniciar el cronómetro
-    isRunning = true; // Iniciar el cronómetro
-    cronometroButton.html('Detener Cronómetro'); // Cambiar texto del botón
+    elapsedTime = 0;
+    isRunning = true;
+    cronometroButton.html('Detener Cronómetro');
   }
 }
 
-// Función para alternar el temporizador
 function toggleTimer() {
   if (timerRunning) {
-    timerRunning = false; // Detener el temporizador
-    timerButton.html('Iniciar Temporizador'); // Cambiar texto del botón
+    timerRunning = false;
+    timerButton.html('Iniciar Temporizador');
+    timerAlertShown = false; // Resetear la alerta al reiniciar
   } else {
-    timerRemaining = timerDuration; // Reiniciar el temporizador
-    timerRunning = true; // Iniciar el temporizador
-    timerButton.html('Detener Temporizador'); // Cambiar texto del botón
+    timerRemaining = timerDuration;
+    timerRunning = true;
+    timerButton.html('Detener Temporizador');
+    timerAlertShown = false; // Resetear la alerta al reiniciar
+  }
+}
+
+function adjustTime(type, amount) {
+  if (type === 'cronometro') {
+    elapsedTime = max(0, elapsedTime + amount);
+  } else if (type === 'temporizador') {
+    timerDuration = max(0, timerDuration + amount);
+    timerRemaining = timerDuration;
   }
 }
